@@ -1,5 +1,7 @@
 using AliyunDriveAPI.Models.Request;
 using NUnit.Framework;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace AliyunDriveAPI.Test;
@@ -11,7 +13,10 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        _client = new AliyunDriveApiClient("a484b3d9bdd449c78cb415bef5bdf686");
+        string refreshToken = File.Exists("refresh_token") ?
+            File.ReadAllText("refresh_token") :
+            Environment.GetEnvironmentVariable("REFRESH_TOKEN");
+        _client = new AliyunDriveApiClient(refreshToken);
     }
 
     [Test]

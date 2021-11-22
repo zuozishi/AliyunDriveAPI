@@ -16,4 +16,10 @@
     <ProjectReference Include="..\AliyunDriveAPI\AliyunDriveAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="refresh_token">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
