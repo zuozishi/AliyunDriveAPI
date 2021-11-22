@@ -1,4 +1,4 @@
-name: dotnet package
+name: UnitTest
 
 on: [push]
 
@@ -22,4 +22,4 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal
         env:
-          REFRESH_TOKEN: ${{ secrets.REFRESH_TKOEN }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
