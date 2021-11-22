@@ -217,3 +217,11 @@ public class AudioMusicMeta
     public string CoverUrl { get; set; }
 }
 #endregion
+
+public class ExFieldsInfo
+{
+    public string VideoMetaProcessed { get; set; }
+
+    [JsonIgnore]
+    public bool IsVideoMetaProcessed => VideoMetaProcessed == "y";
+}

@@ -45,7 +45,7 @@ public partial class AliyunDriveApiClient
 
     private bool IsTokenExpire() => _tokenExpireTime == null || _tokenExpireTime.Value > DateTime.UtcNow;
 
-    private async Task PrepareToken()
+    private async Task PrepareTokenAsync()
     {
         if (!IsTokenExpire()) return;
         var res = await RefreshTokenAsync();
@@ -64,7 +64,7 @@ public partial class AliyunDriveApiClient
         if (obj == null)
             throw new ArgumentNullException(nameof(obj));
         if(prepareToken)
-            await PrepareToken();
+            await PrepareTokenAsync();
         var content = new StringContent(obj.ToJsonString(), Encoding.UTF8, "application/json");
         var resp = await _httpClient.PostAsync(url, content);
         var json = await resp.Content.ReadAsStringAsync();
@@ -76,7 +76,7 @@ public partial class AliyunDriveApiClient
         if (url == null)
             throw new ArgumentNullException(nameof(url));
         if (prepareToken)
-            await PrepareToken();
+            await PrepareTokenAsync();
         string body = obj == null ? "{}" : JsonSerializer.Serialize(obj, JsonSerializerOptions);
         var content = new StringContent(body, Encoding.UTF8, "application/json");
         var resp = await _httpClient.PostAsync(url, content);
