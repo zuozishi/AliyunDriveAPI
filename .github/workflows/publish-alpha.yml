@@ -8,7 +8,7 @@ on:
       - completed
 
 jobs:
-  build:
+  on-success:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Shanghai

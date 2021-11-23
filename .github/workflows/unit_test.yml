@@ -8,6 +8,9 @@ jobs:
     strategy:
       matrix:
         dotnet-version: ["6.0.x"]
+    env:
+      TZ: Asia/Shanghai
+      PACKAGE_ID: AliyunDriveAPI
 
     steps:
       - uses: actions/checkout@v2
@@ -15,6 +18,10 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Process Text
+        run: |
+          sed -i "s/0.0.0/`cat ./$PACKAGE_ID/version.txt`-alpha/" ./$PACKAGE_ID/$PACKAGE_ID.csproj
+          sed -i "s/{GITHUB_TOKEN}/${{ secrets.GITHUB_TOKEN }}/" ./nuget.config
       - name: Install dependencies
         run: dotnet restore
       - name: Build

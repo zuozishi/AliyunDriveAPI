@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliyunDriveAPI", "AliyunDriveAPI\AliyunDriveAPI.csproj", "{EE2D4DCA-570D-4275-99B0-A1BF66F2512F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliyunDriveAPI", "AliyunDriveAPI\AliyunDriveAPI.csproj", "{EE2D4DCA-570D-4275-99B0-A1BF66F2512F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliyunDriveAPI.Test", "AliyunDriveAPI.Test\AliyunDriveAPI.Test.csproj", "{8850E0B2-F971-4011-9BE8-82D833A0A2F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliyunDriveAPI.Test", "AliyunDriveAPI.Test\AliyunDriveAPI.Test.csproj", "{8850E0B2-F971-4011-9BE8-82D833A0A2F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectFiles", "ProjectFiles", "{621A442A-FE20-4523-B200-DF00CE445AA5}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\publish-alpha.yml = .github\workflows\publish-alpha.yml
+		README.md = README.md
+		.github\workflows\unit_test.yml = .github\workflows\unit_test.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
