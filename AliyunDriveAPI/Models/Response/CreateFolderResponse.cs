@@ -1,6 +1,6 @@
 ﻿namespace AliyunDriveAPI.Models.Response;
 
-public class CreateFolderResponse : ErrorResponse
+public class CreateFolderResponse
 {
     public string ParentFileId { get; set; }
 

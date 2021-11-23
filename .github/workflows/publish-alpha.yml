@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  workflow_run:
+    workflows: ["UnitTest"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+      PACKAGE_ID: AliyunDriveAPI
+    strategy:
+      matrix:
+        dotnet-version: ["6.0.x"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Process Text
+        run: |
+          sed -i "s/0.0.0/`cat ./$PACKAGE_ID/version.txt`-alpha/" ./$PACKAGE_ID/$PACKAGE_ID.csproj
+          sed -i "s/{GITHUB_TOKEN}/${{ secrets.GITHUB_TOKEN }}/" ./nuget.config
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Pack
+        run: dotnet pack --configuration Release
+      - name: Publish To Github Packages
+        run: dotnet nuget push "./$PACKAGE_ID/bin/Release/$PACKAGE_ID.`cat ./$PACKAGE_ID/version.txt`-alpha.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
+      - name: Publish To NuGet
+        run: dotnet nuget push "./$PACKAGE_ID/bin/Release/$PACKAGE_ID.`cat ./$PACKAGE_ID/version.txt`-alpha.nupkg" --api-key ${{ secrets.NUGET_SECRET }} --source "https://api.nuget.org/v3/index.json" --skip-duplicate

@@ -23,11 +23,11 @@ internal sealed class EnumConverterFactory : JsonConverterFactory
             new object[] { converterOptions, serializerOptions })!;
     }
 
-    internal static JsonConverter Create(Type enumType, EnumConverterOptions converterOptions, JsonNamingPolicy? namingPolicy, JsonSerializerOptions serializerOptions)
+    internal static JsonConverter Create(Type enumType, EnumConverterOptions converterOptions, JsonNamingPolicy namingPolicy, JsonSerializerOptions serializerOptions)
     {
         return (JsonConverter)Activator.CreateInstance(
             GetEnumConverterType(enumType),
-            new object?[] { converterOptions, namingPolicy, serializerOptions })!;
+            new object[] { converterOptions, namingPolicy, serializerOptions })!;
     }
 
     private static Type GetEnumConverterType(Type enumType) => typeof(EnumConverter<>).MakeGenericType(enumType);

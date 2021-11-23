@@ -1,6 +1,6 @@
 ﻿using AliyunDriveAPI.Models.Converters;
 using System.Net.Http;
-using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -17,6 +17,7 @@ public partial class AliyunDriveApiClient
     public static JsonSerializerOptions JsonSerializerOptions
         => new()
         {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             PropertyNamingPolicy = new SnakeCaseNamingPolicy(),
             Converters =
@@ -43,7 +44,8 @@ public partial class AliyunDriveApiClient
         return await SendJsonPostAsync<RefreshTokenResponse>("https://websv.aliyundrive.com/token/refresh", obj, false);
     }
 
-    private bool IsTokenExpire() => _tokenExpireTime == null || _tokenExpireTime.Value > DateTime.UtcNow;
+    private bool IsTokenExpire()
+        => _tokenExpireTime == null || _tokenExpireTime.Value > DateTime.UtcNow;
 
     private async Task PrepareTokenAsync()
     {
@@ -55,32 +57,5 @@ public partial class AliyunDriveApiClient
         if (_httpClient.DefaultRequestHeaders.Contains("Authorization"))
             _httpClient.DefaultRequestHeaders.Remove("Authorization");
         _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + _token);
-    }
-
-    private async Task<T> SendJsonPostAsync<T>(string url, JsonNode obj, bool prepareToken = true)
-    {
-        if (url == null)
-            throw new ArgumentNullException(nameof(url));
-        if (obj == null)
-            throw new ArgumentNullException(nameof(obj));
-        if(prepareToken)
-            await PrepareTokenAsync();
-        var content = new StringContent(obj.ToJsonString(), Encoding.UTF8, "application/json");
-        var resp = await _httpClient.PostAsync(url, content);
-        var json = await resp.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
-    }
-
-    private async Task<T> SendJsonPostAsync<T>(string url, object obj, bool prepareToken = true)
-    {
-        if (url == null)
-            throw new ArgumentNullException(nameof(url));
-        if (prepareToken)
-            await PrepareTokenAsync();
-        string body = obj == null ? "{}" : JsonSerializer.Serialize(obj, JsonSerializerOptions);
-        var content = new StringContent(body, Encoding.UTF8, "application/json");
-        var resp = await _httpClient.PostAsync(url, content);
-        string json = await resp.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
     }
 }

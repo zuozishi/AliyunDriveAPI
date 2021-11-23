@@ -25,7 +25,7 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
 
     private readonly ConcurrentDictionary<ulong, JsonEncodedText> _nameCache;
 
-    private ConcurrentDictionary<ulong, JsonEncodedText>? _dictionaryKeyPolicyCache;
+    private ConcurrentDictionary<ulong, JsonEncodedText> _dictionaryKeyPolicyCache;
 
     // This is used to prevent flooding the cache due to exponential bitwise combinations of flags.
     // Since multiple threads can add to the cache, a few more values might be added.
@@ -51,7 +51,7 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
         Array values = Enum.GetValues(typeof(T));
         Debug.Assert(names.Length == values.Length);
 
-        JavaScriptEncoder? encoder = serializerOptions.Encoder;
+        JavaScriptEncoder encoder = serializerOptions.Encoder;
 
         for (int i = 0; i < names.Length; i++)
         {
@@ -202,7 +202,7 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
             {
                 // We are dealing with a combination of flag constants since
                 // all constant values were cached during warm-up.
-                JavaScriptEncoder? encoder = options.Encoder;
+                JavaScriptEncoder encoder = options.Encoder;
 
                 if (_nameCache.Count < NameCacheSizeSoftLimit)
                 {
@@ -299,14 +299,14 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
             (s_negativeSign == null || !value.StartsWith(s_negativeSign)));
     }
 
-    private JsonEncodedText FormatEnumValue(string value, JavaScriptEncoder? encoder)
+    private JsonEncodedText FormatEnumValue(string value, JavaScriptEncoder encoder)
     {
         Debug.Assert(_namingPolicy != null);
         string formatted = FormatEnumValueToString(value, encoder);
         return JsonEncodedText.Encode(formatted, encoder);
     }
 
-    private string FormatEnumValueToString(string value, JavaScriptEncoder? encoder)
+    private string FormatEnumValueToString(string value, JavaScriptEncoder encoder)
     {
         Debug.Assert(_namingPolicy != null);
 
@@ -339,7 +339,7 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
 
     internal T ReadAsPropertyNameCore(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        string? enumString = reader.GetString();
+        string enumString = reader.GetString();
 
         // Try parsing case sensitive first
         if (!Enum.TryParse(enumString, out T value)
@@ -392,7 +392,7 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
 
                 if (_dictionaryKeyPolicyCache.Count < NameCacheSizeSoftLimit)
                 {
-                    JavaScriptEncoder? encoder = options.Encoder;
+                    JavaScriptEncoder encoder = options.Encoder;
 
                     JsonEncodedText formatted = JsonEncodedText.Encode(original, encoder);
 
@@ -414,7 +414,7 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
                 // We might be dealing with a combination of flag constants since all constant values were
                 // likely cached during warm - up(assuming the number of constants <= NameCacheSizeSoftLimit).
 
-                JavaScriptEncoder? encoder = options.Encoder;
+                JavaScriptEncoder encoder = options.Encoder;
 
                 if (_nameCache.Count < NameCacheSizeSoftLimit)
                 {
@@ -468,6 +468,6 @@ internal sealed class EnumConverter<T> : JsonConverter<T>
         }
     }
 
-    private static void ThrowJsonException(string? message = null)
+    private static void ThrowJsonException(string message = null)
         => throw new JsonException(message);
 }

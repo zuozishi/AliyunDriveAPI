@@ -1,6 +1,6 @@
 ﻿namespace AliyunDriveAPI.Models.Response;
 
-public class PreUploadResponse : ErrorResponse
+public class PreUploadResponse
 {
     public string ParentFileId { get; set; }
 

@@ -8,7 +8,7 @@ public class CreateFolderRequest
 
     public string Name { get; set; }
 
-    public string CheckNameMode { get; set; } = "refuse";
+    public CheckNameModeType CheckNameMode { get; set; } = CheckNameModeType.Refuse;
 
     public FileType Type { get; set; } = FileType.Folder;
 }

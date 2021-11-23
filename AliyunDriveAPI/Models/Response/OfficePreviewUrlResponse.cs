@@ -1,6 +1,6 @@
 ﻿namespace AliyunDriveAPI.Models.Response;
 
-public class OfficePreviewUrlResponse : ErrorResponse
+public class OfficePreviewUrlResponse
 {
     public string PreviewUrl { get; set; }
 

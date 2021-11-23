@@ -81,6 +81,20 @@ public class FileItem
 
     public string Category { get; set; }
 
+    [JsonIgnore]
+    public FileCategoryType? CategoryType
+        => Category switch
+        {
+            null => null,
+            "image" => FileCategoryType.Image,
+            "video" => FileCategoryType.Video,
+            "audio" => FileCategoryType.Audio,
+            "app" => FileCategoryType.APP,
+            "doc" => FileCategoryType.Doc,
+            "zip" => FileCategoryType.Zip,
+            _ => FileCategoryType.Others
+        };
+
     public int? PunishFlag { get; set; }
     #endregion
 

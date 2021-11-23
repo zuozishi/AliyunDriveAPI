@@ -1,6 +1,6 @@
 ﻿namespace AliyunDriveAPI.Models.Response;
 
-public class RefreshTokenResponse : ErrorResponse
+public class RefreshTokenResponse
 {
     public string DefaultSboxDriveId { get; set; }
 

@@ -1,18 +1,16 @@
-﻿namespace AliyunDriveAPI.Models.Request;
+﻿using AliyunDriveAPI.Utils;
 
-public class FileListRequest
+namespace AliyunDriveAPI.Models.Request;
+
+public class FileSearchRequest
 {
     public string DriveId { get; set; }
-
-    public string ParentFileId { get; set; } = "root";
 
     public int? Limit { get; set; } = 100;
 
     public string Marker { get; set; }
 
-    public bool? All { get; set; } = false;
-
-    public int? UrlExpireSec { get; set; } = 1600;
+    public string Query { get; set; }
 
     public string ImageThumbnailProcess { get; set; } = "image/resize,w_400/format,jpeg";
 
@@ -20,9 +18,10 @@ public class FileListRequest
 
     public string VideoThumbnailProcess { get; set; } = "video/snapshot,t_0,f_jpg,ar_auto,w_300";
 
-    public string Fields { get; set; } = "*";
-
-    public OrderByType? OrderBy { get; set; } = OrderByType.UpdatedAt;
+    public OrderByType? OrderByType { get; set; } = Types.OrderByType.UpdatedAt;
 
     public OrderDirectionType? OrderDirection { get; set; } = OrderDirectionType.DESC;
+
+    public string OrderBy => OrderByType.HasValue && OrderDirection.HasValue
+        ? ReflectionUtils.GetEnumValueName(OrderByType.Value) + " " + ReflectionUtils.GetEnumValueName(OrderDirection.Value) : null;
 }

@@ -1,6 +1,6 @@
 ﻿namespace AliyunDriveAPI.Models.Response;
 
-public class FileListResponse : ErrorResponse
+public class FileListResponse
 {
     public FileItem[] Items { get; set; }
 

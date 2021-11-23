@@ -12,7 +12,7 @@ public class PreUploadRequest
 
     public FileType Type { get; set; } = FileType.File;
 
-    public string CheckNameMode { get; set; } = "auto_rename";
+    public CheckNameModeType CheckNameMode { get; set; }
 
     public string ContentHash { get; set; }
 

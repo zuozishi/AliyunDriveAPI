@@ -1,6 +1,6 @@
 ﻿namespace AliyunDriveAPI.Models.Response;
 
-public class VideoPreviewInfoResponse : ErrorResponse
+public class VideoPreviewInfoResponse
 {
     public string DomainId { get; set; }
 
