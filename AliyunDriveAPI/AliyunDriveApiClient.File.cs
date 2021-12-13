@@ -156,4 +156,7 @@ public partial class AliyunDriveApiClient
 
     public async Task<FileItem> FileMoveAsync(FileMoveRequest request)
         => await SendJsonPostAsync<FileItem>("v3/file/update", request);
+
+    public async Task<FileShareResponse> ShareAsync(FileShareRequest request) 
+        => await SendJsonPostAsync<FileShareResponse>("adrive/v2/share_link/create", request);
 }

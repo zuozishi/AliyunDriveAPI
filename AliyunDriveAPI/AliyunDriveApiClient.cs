@@ -25,7 +25,8 @@ public partial class AliyunDriveApiClient
                 new Models.Converters.JsonStringEnumConverter(),
                 new JsonNodeConverter(),
                 new TimeSpanSecondConverter(),
-                new NullableTimeSpanSecondConverter()
+                new NullableTimeSpanSecondConverter(),
+                new DatetimeConverter(),
             }
         };
 
