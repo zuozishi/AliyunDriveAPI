@@ -29,10 +29,6 @@ public partial class AliDriveClientTest
         {
             DriveId = DriveId
         });
-        foreach (var item in res.Items)
-        {
-            Console.WriteLine(item.Name);
-        }
         Assert.IsTrue(res.Items.Length > 0);
     }
 
