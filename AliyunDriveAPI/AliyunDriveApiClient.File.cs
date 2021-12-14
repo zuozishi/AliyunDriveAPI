@@ -20,7 +20,7 @@ public partial class AliyunDriveApiClient
 
     public async Task<FileListResponse> FileSearchAsync(string driveId, FileSearchQueryExpression queryExpression, int? limit = 100, string nextMarker = null, OrderByType? orderBy = OrderByType.UpdatedAt, OrderDirectionType? orderDirection = OrderDirectionType.DESC)
         => await FileSearchAsync(driveId, queryExpression.ToString(), limit, nextMarker, orderBy, orderDirection);
-    
+
     public async Task<FileListResponse> FileSearchAsync(string driveId, string query, int? limit = 100, string nextMarker = null, OrderByType? orderBy = OrderByType.UpdatedAt, OrderDirectionType? orderDirection = OrderDirectionType.DESC)
         => await FileSearchAsync(new() { DriveId = driveId, Query = query, Limit = limit, Marker = nextMarker, OrderByType = orderBy, OrderDirection = orderDirection });
 
@@ -31,16 +31,16 @@ public partial class AliyunDriveApiClient
         => await SendJsonPostAsync<FileGetResponse>("v2/file/get", request);
 
     public async Task<CreateFolderResponse> CreateFolderAsync(string driveId, string name, string parentFileId)
-        => await CreateFolderAsync(new(){ DriveId = driveId, Name = name, ParentFileId = parentFileId });
+        => await CreateFolderAsync(new() { DriveId = driveId, Name = name, ParentFileId = parentFileId });
 
     public async Task<CreateFolderResponse> CreateFolderAsync(CreateFolderRequest request)
         => await SendJsonPostAsync<CreateFolderResponse>("adrive/v2/file/createWithFolders", request);
 
     public async Task<FileGetResponse> UploadFileAsync(string driveId, string fileName, byte[] bytes, string parentFileId, CheckNameModeType mode, int chunkSize = 1024 * 1024 * 10)
     {
-        if(driveId == null)
+        if (driveId == null)
             throw new ArgumentNullException(nameof(driveId));
-        if(fileName == null)
+        if (fileName == null)
             throw new ArgumentNullException(nameof(fileName));
         if (bytes == null)
             throw new ArgumentNullException(nameof(bytes));
@@ -91,7 +91,8 @@ public partial class AliyunDriveApiClient
         var partInfos = new List<FileUploadPartInfo>();
         for (int i = 1; i <= partNumber; i++)
             partInfos.Add(new FileUploadPartInfo(i));
-        return await PreUploadAsync(new() {
+        return await PreUploadAsync(new()
+        {
             DriveId = driveId,
             Name = name,
             ParentFileId = parentFileId,
@@ -107,11 +108,11 @@ public partial class AliyunDriveApiClient
 
     public async Task<bool> UploadPart(FileUploadPartInfoWithUrl partInfo, Stream stream, bool useInternalUrl = false)
     {
-        if(partInfo == null)
+        if (partInfo == null)
             throw new ArgumentNullException(nameof(partInfo));
         var content = new StreamContent(stream);
         var resp = await _httpClient.PutAsync(useInternalUrl ? partInfo.InternalUploadUrl : partInfo.UploadUrl, content);
-        if(resp.IsSuccessStatusCode)
+        if (resp.IsSuccessStatusCode)
             return true;
         return false;
     }
@@ -157,6 +158,12 @@ public partial class AliyunDriveApiClient
     public async Task<FileItem> FileMoveAsync(FileMoveRequest request)
         => await SendJsonPostAsync<FileItem>("v3/file/update", request);
 
-    public async Task<FileShareResponse> ShareAsync(FileShareRequest request) 
+    public async Task<FileShareResponse> ShareAsync(FileShareRequest request)
         => await SendJsonPostAsync<FileShareResponse>("adrive/v2/share_link/create", request);
+
+    public async Task<FileShareResponse> ShareAsync(string driveId, string fileId, TimeSpan? expiration = null, string sharePwd = null)
+        => await ShareAsync(new FileShareRequest(driveId, fileId, expiration, sharePwd));
+
+    public async Task<FileShareResponse> ShareAsync(string driveId, List<string> fileIdList, TimeSpan? expiration = null, string sharePwd = null)
+        => await ShareAsync(new FileShareRequest(driveId, fileIdList, expiration, sharePwd));
 }

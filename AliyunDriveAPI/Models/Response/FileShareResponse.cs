@@ -14,7 +14,7 @@ public class FileShareResponse
     
     public string DriveId { get; set; }
     
-    public DateTime Expiration { get; set; }
+    public DateTime? Expiration { get; set; }
     
     public bool Expired { get; set; }
     
