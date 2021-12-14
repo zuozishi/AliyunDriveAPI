@@ -1,4 +1,5 @@
 ﻿using AliyunDriveAPI.Models;
+using AliyunDriveAPI.Models.Request;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -36,5 +37,30 @@ public partial class AliDriveClientTest
     {
         var res = await _client.FileGetAsync(DriveId, ParentFileId);
         Assert.IsTrue(!string.IsNullOrEmpty(res.FileId));
+    }
+
+    [Test]
+    public async Task FileShareAsync()
+    {
+        var res = await _client.ShareAsync(new FileShareRequest(DriveId, ParentFileId, TimeSpan.FromDays(1)));
+        Assert.AreEqual(res.ShareUrl, $"https://www.aliyundrive.com/s/{res.ShareId}");
+    }
+
+    [Test]
+    public async Task FileShareWithPwdAsync()
+    {
+        var password = "6666";
+        var res = await _client.ShareAsync(new FileShareRequest(DriveId, ParentFileId, TimeSpan.FromDays(1), password));
+        Assert.AreEqual(res.ShareUrl, $"https://www.aliyundrive.com/s/{res.ShareId}");
+        Assert.AreEqual(res.SharePwd, password);
+    }
+
+
+    [Test]
+    public async Task FileShareWithoutExpirationAsync()
+    {
+        var res = await _client.ShareAsync(new FileShareRequest(DriveId, ParentFileId));
+        Assert.AreEqual(res.ShareUrl, $"https://www.aliyundrive.com/s/{res.ShareId}");
+        Assert.IsNull(res.Expiration);
     }
 }
