@@ -40,9 +40,10 @@ public partial class AliyunDriveApiClient
     {
         var obj = new JsonObject
         {
-            ["refresh_token"] = _refreshToken
+            ["refresh_token"] = _refreshToken,
+            ["grant_type"] = "refresh_token"
         };
-        return await SendJsonPostAsync<RefreshTokenResponse>("https://websv.aliyundrive.com/token/refresh", obj, false);
+        return await SendJsonPostAsync<RefreshTokenResponse>("https://auth.aliyundrive.com/v2/account/token", obj, false);
     }
 
     private bool IsTokenExpire()
