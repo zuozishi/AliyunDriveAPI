@@ -46,6 +46,7 @@ public partial class AliyunDriveApiClient
             throw new ArgumentNullException(nameof(bytes));
         if (parentFileId == null)
             throw new ArgumentNullException(nameof(parentFileId));
+        await PrepareTokenAsync();
         int chunkCount = (int)Math.Ceiling((double)bytes.Length / chunkSize);
         var preUploadResp = await PreUploadAsync(driveId, fileName, parentFileId, mode, chunkCount);
         for (int i = 0; i < preUploadResp.PartInfoList.Length; i++)
@@ -69,6 +70,7 @@ public partial class AliyunDriveApiClient
             throw new ArgumentNullException(nameof(stream));
         if (parentFileId == null)
             throw new ArgumentNullException(nameof(parentFileId));
+        await PrepareTokenAsync();
         int chunkCount = (int)Math.Ceiling((double)stream.Length / chunkSize);
         var preUploadResp = await PreUploadAsync(driveId, fileName, parentFileId, mode, chunkCount);
         var buffer = new byte[chunkSize];

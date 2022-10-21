@@ -47,7 +47,7 @@ public partial class AliyunDriveApiClient
     }
 
     private bool IsTokenExpire()
-        => _tokenExpireTime == null || _tokenExpireTime.Value > DateTime.UtcNow;
+        => _tokenExpireTime == null || _tokenExpireTime.Value <= DateTime.Now;
 
     private async Task PrepareTokenAsync()
     {
